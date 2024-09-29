@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 
 	"fyne.io/fyne/v2"
@@ -37,17 +38,19 @@ func (app *App) getSavingsTextContainer() *fyne.Container {
 		}
 		return nil
 	}
-	amountEntry.OnChanged = func(s string) {
-		// _, err := strconv.ParseFloat(s, 64)
-		// if err != nil {
-		// 	amountEntry.Text = amount
-		// 	return
-		// }
-	}
 
 	amountEntryContainer := container.NewBorder(nil, nil, amountText, nil, amountEntry)
 
-	saveBtn := widget.NewButtonWithIcon("Save", theme.DocumentSaveIcon(), func() {})
+	saveBtn := widget.NewButtonWithIcon("Save", theme.DocumentSaveIcon(), func() {
+		err := app.UpdateSavingAmount(amountEntry.Text)
+		if err != nil {
+			app.utils.ErrorLog.Println(err)
+			log.Panic(err)
+			return
+		}
+
+		amountEntry.Refresh()
+	})
 	saveBtn.Alignment = widget.ButtonAlignTrailing
 	saveBtn.Importance = widget.HighImportance
 

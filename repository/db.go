@@ -52,6 +52,14 @@ func (s *SQLiteRepository) GetSaving() (*Saving, error) {
 	return &savings[0], nil
 }
 
+func (s *SQLiteRepository) UpdateSavingAmount(amount int64) error {
+	_, err := s.Conn.Exec("update savings set amount = ? where id = 1", amount) // Think better solution for id = 1
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *SQLiteRepository) MigrateSpendings() error {
 	return nil
 }
