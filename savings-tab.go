@@ -18,6 +18,8 @@ func (app *App) savingsTab() *fyne.Container {
 	savingsTextContainer := app.getSavingsTextContainer()
 	savingsContainer := container.NewVBox(savingsTextContainer)
 
+	app.uiComponents.SavingsContainer = savingsContainer
+
 	return savingsContainer
 }
 
@@ -57,7 +59,6 @@ func (app *App) getSavingsTextContainer() *fyne.Container {
 			saveBtn,
 		),
 	)
-	app.uiComponents.SavingsContainer = savingsContainer
 
 	return savingsContainer
 }
