@@ -7,6 +7,5 @@
   <img src="https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" title="SQLite">
 </div>
 
-<p align="center">
-  A simple Finance Management App for tracking budget for Savings, Needs and Wishes and also for tracking whole yearly savings and budget.
-</p>
+## 📝 About the project
+A simple Finance Management App for tracking budget for Savings, Needs and Wishes and also for tracking whole yearly savings and budget.
