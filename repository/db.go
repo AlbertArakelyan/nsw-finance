@@ -1,6 +1,15 @@
 package repository
 
-import "errors"
+import (
+	"database/sql"
+	"errors"
+)
+
+func NewSQLiteRepository(db *sql.DB) *SQLiteRepository {
+	return &SQLiteRepository{
+		Conn: db,
+	}
+}
 
 /**
  * Methods for Savings

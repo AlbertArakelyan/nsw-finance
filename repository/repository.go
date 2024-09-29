@@ -27,9 +27,3 @@ type Spending struct {
 	Icon     string  `json:"icon"`
 	SavingId int64   `json:"saving_id"`
 }
-
-func NewSQLiteRepository(db *sql.DB) *SQLiteRepository {
-	return &SQLiteRepository{
-		Conn: db,
-	}
-}
