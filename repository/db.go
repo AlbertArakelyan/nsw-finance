@@ -2,6 +2,9 @@ package repository
 
 import "errors"
 
+/**
+ * Methods for Savings
+ */
 func (repo *SQLiteRepository) MigrateSavings() error {
 	query := `
 		create table if not exists savings(
@@ -60,6 +63,9 @@ func (s *SQLiteRepository) UpdateSavingAmount(amount int64) error {
 	return nil
 }
 
+/**
+ * Methods for Spendings
+ */
 func (s *SQLiteRepository) MigrateSpendings() error {
 	return nil
 }
