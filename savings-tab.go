@@ -50,6 +50,8 @@ func (app *App) getSavingsTextContainer() *fyne.Container {
 		}
 
 		amountEntry.Refresh()
+
+		// TODO also add logic for updating spendings (in tables)
 	})
 	saveBtn.Alignment = widget.ButtonAlignTrailing
 	saveBtn.Importance = widget.HighImportance
