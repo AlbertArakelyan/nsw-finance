@@ -38,11 +38,11 @@ func (app *App) getSavingsTextContainer() *fyne.Container {
 		return nil
 	}
 	amountEntry.OnChanged = func(s string) {
-		_, err := strconv.ParseFloat(s, 64)
-		if err != nil {
-			amountEntry.Text = amount
-			return
-		}
+		// _, err := strconv.ParseFloat(s, 64)
+		// if err != nil {
+		// 	amountEntry.Text = amount
+		// 	return
+		// }
 	}
 
 	amountEntryContainer := container.NewBorder(nil, nil, amountText, nil, amountEntry)
