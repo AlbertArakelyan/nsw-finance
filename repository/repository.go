@@ -7,6 +7,7 @@ type SQLiteRepository struct {
 }
 type Repository interface {
 	MigrateSavings() error
+
 	MigrateSpendings() error
 }
 
