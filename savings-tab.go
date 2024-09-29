@@ -67,3 +67,5 @@ func (app *App) getSavingsTextContainer() *fyne.Container {
 
 	return savingsContainer
 }
+
+// TODO add functions or reusable function for displaying spending tables
