@@ -14,7 +14,7 @@ func (app *App) getSavingsText() (string, *canvas.Text) {
 	// Get savings info from DB
 	savingAmount, savingAvailableAmount, err := app.GetSavingAmounts()
 	if err != nil {
-		app.utils.ErrorLog.Println(err)
+		app.Utils.ErrorLog.Println(err)
 		log.Panic(err)
 	}
 

@@ -19,7 +19,7 @@ func (app *App) savingsTab() *fyne.Container {
 	savingsTextContainer := app.getSavingsTextContainer()
 	savingsContainer := container.NewVBox(savingsTextContainer)
 
-	app.uiComponents.SavingsContainer = savingsContainer
+	app.UIComponents.SavingsContainer = savingsContainer
 
 	return savingsContainer
 }
@@ -44,7 +44,7 @@ func (app *App) getSavingsTextContainer() *fyne.Container {
 	saveBtn := widget.NewButtonWithIcon("Save", theme.DocumentSaveIcon(), func() {
 		err := app.UpdateSavingAmount(amountEntry.Text)
 		if err != nil {
-			app.utils.ErrorLog.Println(err)
+			app.Utils.ErrorLog.Println(err)
 			log.Panic(err)
 			return
 		}

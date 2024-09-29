@@ -27,9 +27,9 @@ type Utils struct {
 type App struct {
 	App          fyne.App
 	MainWindow   fyne.Window
-	uiComponents UIComponents
+	UIComponents UIComponents
 	DB           repository.Repository
-	utils        Utils
+	Utils        Utils
 }
 
 func main() {
@@ -41,8 +41,8 @@ func main() {
 	myApp.App.Settings().SetTheme(theme.LightTheme())
 
 	// create our loggers
-	myApp.utils.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	myApp.utils.ErrorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	myApp.Utils.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	myApp.Utils.ErrorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	// open a connection to the database
 	sqlDB, err := myApp.connectSQL()
@@ -89,7 +89,7 @@ func (app *App) setupDB(sqlDB *sql.DB) {
 
 	err := app.DB.MigrateSavings()
 	if err != nil {
-		app.utils.ErrorLog.Println(err)
+		app.Utils.ErrorLog.Println(err)
 		log.Panic(err)
 	}
 }
