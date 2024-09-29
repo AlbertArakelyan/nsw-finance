@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"net/http"
 	"nsw-finance/repository"
 	"os"
 
@@ -18,8 +19,9 @@ type UIComponents struct {
 }
 
 type Utils struct {
-	InfoLog  *log.Logger
-	ErrorLog *log.Logger
+	InfoLog    *log.Logger
+	ErrorLog   *log.Logger
+	HTTPClient *http.Client
 }
 
 type App struct {
