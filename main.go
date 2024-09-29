@@ -3,17 +3,31 @@ package main
 import (
 	"database/sql"
 	"log"
+	"nsw-finance/repository"
+	"os"
 
-	"fyne.io/fyne"
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/theme"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/theme"
 
 	_ "github.com/glebarez/go-sqlite"
 )
 
+type UIComponents struct {
+	SavingsContainer *fyne.Container
+}
+
+type Utils struct {
+	InfoLog  *log.Logger
+	ErrorLog *log.Logger
+}
+
 type App struct {
-	App        fyne.App
-	MainWindow fyne.Window
+	App          fyne.App
+	MainWindow   fyne.Window
+	uiComponents UIComponents
+	DB           repository.Repository
+	utils        Utils
 }
 
 func main() {
@@ -24,11 +38,18 @@ func main() {
 	myApp.App = fyneApp
 	myApp.App.Settings().SetTheme(theme.LightTheme())
 
+	// create our loggers
+	myApp.utils.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	myApp.utils.ErrorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
 	// open a connection to the database
-	_, err := myApp.connectSQL()
+	sqlDB, err := myApp.connectSQL()
 	if err != nil {
 		log.Panic(err)
 	}
+
+	// setup the database
+	myApp.setupDB(sqlDB)
 
 	// create and size a fyne window
 	myApp.MainWindow = fyneApp.NewWindow("NSW Finance")
@@ -37,7 +58,7 @@ func main() {
 	myApp.MainWindow.SetMaster()
 
 	// make the UI
-	// myApp.makeUI()
+	myApp.makeUI()
 
 	// show and run the application
 	myApp.MainWindow.ShowAndRun()
@@ -59,4 +80,14 @@ func (app *App) connectSQL() (*sql.DB, error) {
 	}
 
 	return db, nil
+}
+
+func (app *App) setupDB(sqlDB *sql.DB) {
+	app.DB = repository.NewSQLiteRepository(sqlDB)
+
+	err := app.DB.MigrateSavings()
+	if err != nil {
+		app.utils.ErrorLog.Println(err)
+		log.Panic(err)
+	}
 }
