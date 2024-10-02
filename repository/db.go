@@ -39,10 +39,10 @@ func (repo *SQLiteRepository) MigrateSavings() error {
 	return err
 }
 
-func (s *SQLiteRepository) GetSaving() (*Saving, error) {
+func (repo *SQLiteRepository) GetSaving() (*Saving, error) {
 	query := `select * from savings;`
 
-	rows, err := s.Conn.Query(query)
+	rows, err := repo.Conn.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,21 @@ func (s *SQLiteRepository) UpdateSavingAmount(amount int64) error {
 /**
  * Methods for Spendings
  */
-func (s *SQLiteRepository) MigrateSpendingTables() error {
+func (repo *SQLiteRepository) MigrateSpendingTables() error {
+	query := `
+		create table if not exists spending_tables(
+			id integer primary key autoincrement,
+			label text not null,
+			saving_id integer not null,
+
+			foreign key(saving_id) references savings(id)
+		);
+	`
+
+	_, err := repo.Conn.Exec(query)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
