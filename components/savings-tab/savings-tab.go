@@ -3,6 +3,7 @@ package savingstab
 import (
 	"fmt"
 	"log"
+	spendingtables "nsw-finance/components/savings-tab/spending-tables"
 	"nsw-finance/repository"
 
 	"fyne.io/fyne/v2"
@@ -25,7 +26,15 @@ var currency = "AMD"
 
 func (savingsTab *SavingsTab) GetSavingsTab() *fyne.Container {
 	savingsTextContainer := savingsTab.getSavingsContainer()
-	savingsContainer := container.NewVBox(savingsTextContainer)
+
+	spendingTables := &spendingtables.SpendingTables{
+		DB:       savingsTab.DB,
+		InfoLog:  savingsTab.InfoLog,
+		ErrorLog: savingsTab.ErrorLog,
+	}
+	spendingTablesContainer := spendingTables.GetSpendingTablesContainer()
+
+	savingsContainer := container.NewVBox(savingsTextContainer, spendingTablesContainer)
 
 	return savingsContainer
 }
