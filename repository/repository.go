@@ -5,6 +5,7 @@ import "database/sql"
 type SQLiteRepository struct {
 	Conn *sql.DB
 }
+
 type Repository interface {
 	MigrateSavings() error
 	GetSaving() (*Saving, error)
