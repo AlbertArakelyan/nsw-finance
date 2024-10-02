@@ -13,6 +13,8 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+type SavingsChildren struct{}
+
 type SavingsTab struct {
 	DB       repository.Repository
 	InfoLog  *log.Logger

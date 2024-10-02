@@ -9,7 +9,11 @@ import (
 )
 
 func (app *App) makeUI() {
-	// get App Tabs
+	/*
+	* Get App Tabs
+	*/
+
+	// Savings Tab
 	savingsTab := &savingstab.SavingsTab{
 		DB:       app.DB,
 		InfoLog:  app.Utils.InfoLog,
