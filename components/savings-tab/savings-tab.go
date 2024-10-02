@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"nsw-finance/repository"
-	"strconv"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -36,24 +35,15 @@ func (savingsTab *SavingsTab) getSavingsTextContainer() *fyne.Container {
 	amountEntry := widget.NewEntry()
 	amountEntry.SetPlaceHolder(fmt.Sprintf("Amount (%s)", currency))
 	amountEntry.Text = amount
-	amountEntry.Validator = func(s string) error {
-		_, err := strconv.ParseFloat(s, 64)
-		if err != nil {
-			return err
-		}
-		return nil
+	amountEntry.OnChanged = func(s string) {
+		savingsTab.ValidateAndUpdateSavingAmount(s)
 	}
+	amountEntry.Validator = amountEntryValidator
 
 	amountEntryContainer := container.NewBorder(nil, nil, amountText, nil, amountEntry)
 
 	saveBtn := widget.NewButtonWithIcon("Save", theme.DocumentSaveIcon(), func() {
-		err := savingsTab.UpdateSavingAmount(amountEntry.Text)
-		if err != nil {
-			savingsTab.ErrorLog.Println(err)
-			log.Panic(err)
-			return
-		}
-
+		savingsTab.ValidateAndUpdateSavingAmount(amountEntry.Text)
 		amountEntry.Refresh()
 
 		// TODO also add logic for updating spendings (in tables)

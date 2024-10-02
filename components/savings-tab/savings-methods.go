@@ -1,7 +1,6 @@
 package savingstab
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 )
@@ -26,7 +25,28 @@ func (savingsTab *SavingsTab) UpdateSavingAmount(amountText string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("mtav")
+
+	return nil
+}
+
+func amountEntryValidator(s string) error {
+	_, err := strconv.ParseFloat(s, 64)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (savingsTab *SavingsTab) ValidateAndUpdateSavingAmount(amountText string) error {
+	err := amountEntryValidator(amountText)
+	if err != nil {
+		return err
+	}
+
+	err = savingsTab.UpdateSavingAmount(amountText)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
