@@ -22,15 +22,16 @@ type SavingsTab struct {
 var currency = "AMD"
 
 func (savingsTab *SavingsTab) GetSavingsTab() *fyne.Container {
-	savingsTextContainer := savingsTab.getSavingsTextContainer()
+	savingsTextContainer := savingsTab.getSavingsContainer()
 	savingsContainer := container.NewVBox(savingsTextContainer)
 
 	return savingsContainer
 }
 
-func (savingsTab *SavingsTab) getSavingsTextContainer() *fyne.Container {
+func (savingsTab *SavingsTab) getSavingsContainer() *fyne.Container {
 	amount, availableAmount := savingsTab.getSavingsText()
 
+	// Amount text and entry
 	amountText := canvas.NewText("Savings: ", nil)
 	amountEntry := widget.NewEntry()
 	amountEntry.SetPlaceHolder(fmt.Sprintf("Amount (%s)", currency))
