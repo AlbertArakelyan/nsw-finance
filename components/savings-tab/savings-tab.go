@@ -1,8 +1,9 @@
-package main
+package savingstab
 
 import (
 	"fmt"
 	"log"
+	"nsw-finance/repository"
 	"strconv"
 
 	"fyne.io/fyne/v2"
@@ -13,19 +14,23 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+type SavingsTab struct {
+	DB       repository.Repository
+	InfoLog  *log.Logger
+	ErrorLog *log.Logger
+}
+
 var currency = "AMD"
 
-func (app *App) savingsTab() *fyne.Container {
-	savingsTextContainer := app.getSavingsTextContainer()
+func (savingsTab *SavingsTab) GetSavingsTab() *fyne.Container {
+	savingsTextContainer := savingsTab.getSavingsTextContainer()
 	savingsContainer := container.NewVBox(savingsTextContainer)
-
-	app.UIComponents.SavingsContainer = savingsContainer
 
 	return savingsContainer
 }
 
-func (app *App) getSavingsTextContainer() *fyne.Container {
-	amount, availableAmount := app.getSavingsText()
+func (savingsTab *SavingsTab) getSavingsTextContainer() *fyne.Container {
+	amount, availableAmount := savingsTab.getSavingsText()
 
 	amountText := canvas.NewText("Savings: ", nil)
 	amountEntry := widget.NewEntry()
@@ -42,9 +47,9 @@ func (app *App) getSavingsTextContainer() *fyne.Container {
 	amountEntryContainer := container.NewBorder(nil, nil, amountText, nil, amountEntry)
 
 	saveBtn := widget.NewButtonWithIcon("Save", theme.DocumentSaveIcon(), func() {
-		err := app.UpdateSavingAmount(amountEntry.Text)
+		err := savingsTab.UpdateSavingAmount(amountEntry.Text)
 		if err != nil {
-			app.Utils.ErrorLog.Println(err)
+			savingsTab.ErrorLog.Println(err)
 			log.Panic(err)
 			return
 		}

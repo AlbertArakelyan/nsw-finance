@@ -1,6 +1,8 @@
 package main
 
 import (
+	savingstab "nsw-finance/components/savings-tab"
+
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
@@ -8,10 +10,16 @@ import (
 
 func (app *App) makeUI() {
 	// get App Tabs
-	savingsTab := app.savingsTab()
+	savingsTab := &savingstab.SavingsTab{
+		DB:       app.DB,
+		InfoLog:  app.Utils.InfoLog,
+		ErrorLog: app.Utils.ErrorLog,
+	}
+	savingsContainer := savingsTab.GetSavingsTab()
+	app.UIComponents.SavingsContainer = savingsContainer
 
 	tabs := container.NewAppTabs(
-		container.NewTabItemWithIcon("Savings", theme.FileIcon(), savingsTab),
+		container.NewTabItemWithIcon("Savings", theme.FileIcon(), savingsContainer),
 		container.NewTabItemWithIcon("Passable", theme.ConfirmIcon(), canvas.NewText("Passable Tab", nil)),
 	)
 	tabs.SetTabLocation(container.TabLocationLeading)

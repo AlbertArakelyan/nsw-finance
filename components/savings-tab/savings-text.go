@@ -1,27 +1,28 @@
-package main
+package savingstab
 
 import (
 	"fmt"
 	"log"
+	"nsw-finance/theme"
 	"strconv"
 
 	"fyne.io/fyne/v2/canvas"
 )
 
-func (app *App) getSavingsText() (string, *canvas.Text) {
+func (savingsTab *SavingsTab) getSavingsText() (string, *canvas.Text) {
 	var availableAmount *canvas.Text
 
 	// Get savings info from DB
-	savingAmount, savingAvailableAmount, err := app.GetSavingAmounts()
+	savingAmount, savingAvailableAmount, err := savingsTab.GetSavingAmounts()
 	if err != nil {
-		app.Utils.ErrorLog.Println(err)
+		savingsTab.ErrorLog.Println(err)
 		log.Panic(err)
 	}
 
 	amountText := strconv.FormatFloat(float64(savingAmount), 'f', 2, 64)
 	availableAmountText := fmt.Sprintf("Available: %.2f %s", float64(savingAvailableAmount), currency)
 
-	availableAmount = canvas.NewText(availableAmountText, appTheme.colors.gray)
+	availableAmount = canvas.NewText(availableAmountText, theme.AppTheme.Colors.Gray)
 
 	return amountText, availableAmount
 }
