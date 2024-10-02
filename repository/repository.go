@@ -11,6 +11,7 @@ type Repository interface {
 	GetSaving() (*Saving, error)
 	UpdateSavingAmount(amount int64) error
 
+	MigrateSpendingTables() error
 	MigrateSpendings() error
 }
 

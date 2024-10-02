@@ -75,6 +75,10 @@ func (s *SQLiteRepository) UpdateSavingAmount(amount int64) error {
 /**
  * Methods for Spendings
  */
+func (s *SQLiteRepository) MigrateSpendingTables() error {
+	return nil
+}
+
 func (s *SQLiteRepository) MigrateSpendings() error {
 	return nil
 }
