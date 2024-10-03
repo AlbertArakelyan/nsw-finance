@@ -13,18 +13,22 @@ import (
 
 type UIComponents struct {
 	AddNewSpendingTableEntryContainer *fyne.Container
+	SpendingTablesContent             *fyne.Container
 }
 
 type SpendingTables struct {
-	DB           repository.Repository
-	InfoLog      *log.Logger
-	ErrorLog     *log.Logger
-	UIComponents UIComponents
+	DB                         repository.Repository
+	InfoLog                    *log.Logger
+	ErrorLog                   *log.Logger
+	UIComponents               UIComponents
+	SpendingTablesSlice        []repository.SQLiteRepository
+	IsSpendingTablesSliceEmpty bool
 }
 
 func (spendingTables *SpendingTables) GetSpendingTablesContainer() *fyne.Container {
 	spendingTablesContainer := container.NewVBox(
 		spendingTables.getSpendingTablesHeader(),
+		spendingTables.getSpendingTables(),
 	)
 
 	return spendingTablesContainer
@@ -51,10 +55,20 @@ func (spendingTables *SpendingTables) getSpendingTablesHeader() *fyne.Container 
 }
 
 func (spendingTables *SpendingTables) getAddNewSpendingTableEntryContainer() *fyne.Container {
+	// Maybe in future change whole entry with Dialog
 	addNewSpendingTableEntry := widget.NewEntry()
 	addNewSpendingTableEntry.PlaceHolder = "Spending Table Name"
 
-	saveButton := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {})
+	saveButton := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
+		err := spendingTables.ValidateAndAddSpendingTable(addNewSpendingTableEntry.Text, 1)
+		if err != nil {
+			spendingTables.ErrorLog.Println(err)
+			return
+		}
+
+		addNewSpendingTableEntry.Text = ""
+		spendingTables.UIComponents.AddNewSpendingTableEntryContainer.Hide()
+	})
 
 	deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {
 		spendingTables.UIComponents.AddNewSpendingTableEntryContainer.Hide()
@@ -72,4 +86,30 @@ func (spendingTables *SpendingTables) getAddNewSpendingTableEntryContainer() *fy
 	spendingTables.UIComponents.AddNewSpendingTableEntryContainer = addNewSpendingTableEntryContainer
 
 	return addNewSpendingTableEntryContainer
+}
+
+func (spendingTables *SpendingTables) getSpendingTables() *fyne.Container {
+	spendingTablesContent := container.NewVBox()
+	spendingTables.UIComponents.SpendingTablesContent = spendingTablesContent
+
+	spendingTablesSlice, err := spendingTables.GetSpendingTables(1) // TODO change 1 to actual id
+	if err != nil {
+		spendingTables.IsSpendingTablesSliceEmpty = true
+		spendingTables.ErrorLog.Println(err)
+		spendingTablesContent.Add(container.NewCenter(canvas.NewText("No Spending Tables", nil)))
+		return spendingTablesContent
+	}
+
+	spendingTablesContent.RemoveAll()
+
+	for _, spendingTable := range spendingTablesSlice {
+		c := container.NewHBox(
+			canvas.NewText(spendingTable.Label, nil),
+		)
+		spendingTablesContent.Add(c)
+	}
+
+	spendingTables.IsSpendingTablesSliceEmpty = len(spendingTablesSlice) == 0
+
+	return spendingTablesContent
 }

@@ -93,6 +93,60 @@ func (repo *SQLiteRepository) MigrateSpendingTables() error {
 	return nil
 }
 
-func (s *SQLiteRepository) MigrateSpendings() error {
+func (repo *SQLiteRepository) MigrateSpendings() error {
 	return nil
+}
+
+func (repo *SQLiteRepository) AddSpendingTable(label string, savingId int64) (int64, error) {
+	res, err := repo.Conn.Exec("insert into spending_tables(label, saving_id) values(?, ?)", label, savingId)
+	if err != nil {
+		return 0, err
+	}
+
+	lastInsertId, err := res.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return lastInsertId, nil
+}
+
+func (repo *SQLiteRepository) GetSpendingTables(savingId int64) ([]SpendingTable, error) {
+	query := `select * from spending_tables where saving_id = ?;`
+
+	rows, err := repo.Conn.Query(query, savingId)
+	if err != nil {
+		return nil, err
+	}
+
+	var spendingTables []SpendingTable
+	for rows.Next() {
+		var spendingTable SpendingTable
+		err = rows.Scan(&spendingTable.ID, &spendingTable.Label, &spendingTable.SavingId)
+		if err != nil {
+			return nil, err
+		}
+		spendingTables = append(spendingTables, spendingTable)
+	}
+
+	return spendingTables, nil
+}
+
+func (repo *SQLiteRepository) GetSpendingTableByID(id int64) (*SpendingTable, error) {
+	query := `select * from spending_tables where id = ?;`
+
+	rows, err := repo.Conn.Query(query, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var spendingTable SpendingTable
+	for rows.Next() {
+		err = rows.Scan(&spendingTable.ID, &spendingTable.Label, &spendingTable.SavingId)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &spendingTable, nil
 }

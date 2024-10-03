@@ -13,6 +13,9 @@ type Repository interface {
 
 	MigrateSpendingTables() error
 	MigrateSpendings() error
+	AddSpendingTable(label string, savingId int64) (int64, error)
+	GetSpendingTables(savingId int64) ([]SpendingTable, error)
+	GetSpendingTableByID(id int64) (*SpendingTable, error)
 }
 
 type Saving struct {
@@ -20,6 +23,12 @@ type Saving struct {
 	Amount          int64 `json:"amount"`
 	AvailableAmount int64 `json:"available_amount"`
 	Year            int64 `json:"year"`
+}
+
+type SpendingTable struct {
+	ID       int64  `json:"id"`
+	Label    string `json:"label"`
+	SavingId int64  `json:"saving_id"`
 }
 
 type Spending struct {
