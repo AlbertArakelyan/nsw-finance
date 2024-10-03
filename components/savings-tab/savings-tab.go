@@ -14,12 +14,15 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-type SavingsChildren struct{}
+type SavingsChildren struct {
+	SpendingTablesContainer *fyne.Container
+}
 
 type SavingsTab struct {
 	DB       repository.Repository
 	InfoLog  *log.Logger
 	ErrorLog *log.Logger
+	Children SavingsChildren
 }
 
 var currency = "AMD"
@@ -33,6 +36,7 @@ func (savingsTab *SavingsTab) GetSavingsTab() *fyne.Container {
 		ErrorLog: savingsTab.ErrorLog,
 	}
 	spendingTablesContainer := spendingTables.GetSpendingTablesContainer()
+	savingsTab.Children.SpendingTablesContainer = spendingTablesContainer
 
 	savingsContainer := container.NewVBox(savingsTextContainer, spendingTablesContainer)
 
