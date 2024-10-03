@@ -6,6 +6,7 @@ import (
 
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 )
 
 func (spendingTables *SpendingTables) ValidateAndAddSpendingTable(label string, savingId int64) error {
@@ -43,8 +44,13 @@ func (spendingTables *SpendingTables) RefreshSpendingsTablesContent(lastSpending
 		return
 	}
 
-	c := container.NewHBox(
-		canvas.NewText(lastSpendingTable.Label, nil),
+	c := container.NewVBox(
+		container.NewHBox(
+			canvas.NewText(lastSpendingTable.Label, nil),
+			// Add Delete button
+		),
+		// TODO add some getTableContent method (which will return the table by itself)
+		widget.NewSeparator(),
 	)
 
 	if spendingTables.IsSpendingTablesSliceEmpty {

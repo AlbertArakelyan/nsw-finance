@@ -47,7 +47,7 @@ func (spendingTables *SpendingTables) getSpendingTablesHeader() *fyne.Container 
 
 	spendingTablesContainer := container.NewVBox(
 		spendingTablesHeader,
-		widget.NewSeparator(),
+		widget.NewSeparator(), // TODO replace with primary color (rectangle from app-header.go)
 		addNewSpendingTableEntryContainer,
 	)
 
@@ -103,8 +103,13 @@ func (spendingTables *SpendingTables) getSpendingTables() *fyne.Container {
 	spendingTablesContent.RemoveAll()
 
 	for _, spendingTable := range spendingTablesSlice {
-		c := container.NewHBox(
-			canvas.NewText(spendingTable.Label, nil),
+		c := container.NewVBox(
+			container.NewHBox(
+				canvas.NewText(spendingTable.Label, nil),
+				// TODO Add Delete button
+			),
+			// TODO replace with some getTableContent method (which will return the table by itself)
+			widget.NewSeparator(),
 		)
 		spendingTablesContent.Add(c)
 	}
