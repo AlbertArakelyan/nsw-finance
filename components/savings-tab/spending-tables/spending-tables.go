@@ -66,7 +66,7 @@ func (spendingTables *SpendingTables) getAddNewSpendingTableEntryContainer() *fy
 			return
 		}
 
-		addNewSpendingTableEntry.Text = ""
+		addNewSpendingTableEntry.SetText("")
 		spendingTables.UIComponents.AddNewSpendingTableEntryContainer.Hide()
 	})
 
