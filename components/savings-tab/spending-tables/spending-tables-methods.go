@@ -50,6 +50,7 @@ func (spendingTables *SpendingTables) RefreshSpendingsTablesContent(lastSpending
 	if spendingTables.IsSpendingTablesSliceEmpty {
 		spendingTables.UIComponents.SpendingTablesContent.RemoveAll()
 		spendingTables.UIComponents.SpendingTablesContent.Add(c)
+		spendingTables.IsSpendingTablesSliceEmpty = false
 	} else {
 		spendingTables.UIComponents.SpendingTablesContent.Add(c)
 	}
