@@ -1,6 +1,7 @@
 package main
 
 import (
+	appheader "nsw-finance/components/app-header"
 	savingstab "nsw-finance/components/savings-tab"
 
 	"fyne.io/fyne/v2/canvas"
@@ -9,9 +10,15 @@ import (
 )
 
 func (app *App) makeUI() {
+	/**
+	* Get App Header
+	 */
+
+	appHeaderContainer := appheader.GetAppHeaderContainer()
+
 	/*
 	* Get App Tabs
-	*/
+	 */
 
 	// Savings Tab
 	savingsTab := &savingstab.SavingsTab{
@@ -29,7 +36,7 @@ func (app *App) makeUI() {
 	tabs.SetTabLocation(container.TabLocationLeading)
 
 	// add container to window
-	finalContent := container.NewVBox(tabs)
+	finalContent := container.NewVBox(appHeaderContainer, tabs)
 
 	app.MainWindow.SetContent(finalContent)
 }
