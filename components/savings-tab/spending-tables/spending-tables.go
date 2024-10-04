@@ -124,7 +124,7 @@ func (spendingTables *SpendingTables) getSpendingTables() *fyne.Container {
 				canvas.NewText(spendingTable.Label, nil),
 				// TODO Add Delete button
 			),
-			spendingTables.Children.Spendings.GetSpendingsContainer(),
+			spendingTables.Children.Spendings.GetSpendingsContainer(), // TODO add this logic to the place when the list(table) is updated
 			widget.NewSeparator(),
 		)
 		spendingTablesContent.Add(c)
