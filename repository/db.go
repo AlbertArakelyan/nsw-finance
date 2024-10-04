@@ -100,6 +100,7 @@ func (repo *SQLiteRepository) MigrateSpendings() error {
 			amount real not null,
 			label text not null,
 			icon text,
+			saving_table_id integer not null,
 
 			foreign key(saving_table_id) references spending_tables(id)
 		);
@@ -109,7 +110,7 @@ func (repo *SQLiteRepository) MigrateSpendings() error {
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
