@@ -98,4 +98,10 @@ func (app *App) setupDB(sqlDB *sql.DB) {
 		app.Utils.ErrorLog.Println(err)
 		log.Panic(err)
 	}
+
+	err = app.DB.MigrateSpendings()
+	if err != nil {
+		app.Utils.ErrorLog.Println(err)
+		log.Panic(err)
+	}
 }

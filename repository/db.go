@@ -94,6 +94,22 @@ func (repo *SQLiteRepository) MigrateSpendingTables() error {
 }
 
 func (repo *SQLiteRepository) MigrateSpendings() error {
+	query := `
+		create table if not exists spendings(
+			id integer primary key autoincrement,
+			amount real not null,
+			label text not null,
+			icon text,
+
+			foreign key(saving_table_id) references spending_tables(id)
+		);
+	`
+
+	_, err := repo.Conn.Exec(query)
+	if err != nil {
+		return err
+	}
+	
 	return nil
 }
 
