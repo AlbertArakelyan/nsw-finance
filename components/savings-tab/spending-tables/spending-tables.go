@@ -2,6 +2,7 @@ package spendingtables
 
 import (
 	"log"
+	"nsw-finance/components/savings-tab/spending-tables/spendings"
 	"nsw-finance/repository"
 
 	"fyne.io/fyne/v2"
@@ -10,6 +11,10 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
+
+type SpendingTablesChildren struct {
+	Spendings *spendings.Spendings
+}
 
 type UIComponents struct {
 	AddNewSpendingTableEntryContainer *fyne.Container
@@ -21,11 +26,19 @@ type SpendingTables struct {
 	InfoLog                    *log.Logger
 	ErrorLog                   *log.Logger
 	UIComponents               UIComponents
+	Children                   SpendingTablesChildren
 	SpendingTablesSlice        []repository.SQLiteRepository
 	IsSpendingTablesSliceEmpty bool
 }
 
 func (spendingTables *SpendingTables) GetSpendingTablesContainer() *fyne.Container {
+	spendings := &spendings.Spendings{
+		DB:       spendingTables.DB,
+		InfoLog:  spendingTables.InfoLog,
+		ErrorLog: spendingTables.ErrorLog,
+	}
+	spendingTables.Children.Spendings = spendings
+
 	spendingTablesContainer := container.NewVBox(
 		spendingTables.getSpendingTablesHeader(),
 		spendingTables.getSpendingTables(),
@@ -45,10 +58,12 @@ func (spendingTables *SpendingTables) getSpendingTablesHeader() *fyne.Container 
 	addNewSpendingTableEntryContainer := spendingTables.getAddNewSpendingTableEntryContainer()
 	addNewSpendingTableEntryContainer.Hide()
 
-	spendingTablesContainer := container.NewVBox(
-		spendingTablesHeader,
-		widget.NewSeparator(), // TODO replace with primary color (rectangle from app-header.go)
-		addNewSpendingTableEntryContainer,
+	spendingTablesContainer := container.NewStack(
+		container.NewVBox(
+			spendingTablesHeader,
+			widget.NewSeparator(), // TODO replace with primary color (rectangle from app-header.go)
+		),
+		container.NewVBox(addNewSpendingTableEntryContainer),
 	)
 
 	return spendingTablesContainer
@@ -82,6 +97,7 @@ func (spendingTables *SpendingTables) getAddNewSpendingTableEntryContainer() *fy
 		container.NewHBox(saveButton, deleteButton),
 		addNewSpendingTableEntry,
 	)
+	addNewSpendingTableEntryContainer.MinSize().Subtract(fyne.NewSize(0, 10))
 
 	spendingTables.UIComponents.AddNewSpendingTableEntryContainer = addNewSpendingTableEntryContainer
 
@@ -108,7 +124,7 @@ func (spendingTables *SpendingTables) getSpendingTables() *fyne.Container {
 				canvas.NewText(spendingTable.Label, nil),
 				// TODO Add Delete button
 			),
-			// TODO replace with some getTableContent method (which will return the table by itself)
+			spendingTables.Children.Spendings.GetSpendingsContainer(),
 			widget.NewSeparator(),
 		)
 		spendingTablesContent.Add(c)
@@ -116,5 +132,9 @@ func (spendingTables *SpendingTables) getSpendingTables() *fyne.Container {
 
 	spendingTables.IsSpendingTablesSliceEmpty = len(spendingTablesSlice) == 0
 
-	return spendingTablesContent
+	spendingTablesScroll := container.NewVScroll(spendingTablesContent)
+	spendingTablesScroll.SetMinSize(fyne.Size{Height: 300})
+	spendingTablesBorderedContent := container.NewBorder(nil, nil, nil, nil, spendingTablesScroll)
+
+	return spendingTablesBorderedContent
 }

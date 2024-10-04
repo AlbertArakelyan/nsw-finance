@@ -36,7 +36,7 @@ func (app *App) makeUI() {
 	tabs.SetTabLocation(container.TabLocationLeading)
 
 	// add container to window
-	finalContent := container.NewVBox(appHeaderContainer, tabs)
+	finalContent := container.NewBorder(appHeaderContainer, nil, nil, nil, tabs)
 
 	app.MainWindow.SetContent(finalContent)
 }
