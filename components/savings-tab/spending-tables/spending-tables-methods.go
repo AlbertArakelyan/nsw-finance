@@ -47,9 +47,9 @@ func (spendingTables *SpendingTables) RefreshSpendingsTablesContent(lastSpending
 	c := container.NewVBox(
 		container.NewHBox(
 			canvas.NewText(lastSpendingTable.Label, nil),
-			// Add Delete button
+			// TODO Add Delete button
 		),
-		// TODO add some getTableContent method (which will return the table by itself)
+		spendingTables.Children.Spendings.GetSpendingsContainer(),
 		widget.NewSeparator(),
 	)
 
