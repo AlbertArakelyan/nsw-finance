@@ -73,7 +73,7 @@ func (s *SQLiteRepository) UpdateSavingAmount(amount int64) error {
 }
 
 /**
- * Methods for Spendings
+ * Methods for Spendings Tables
  */
 func (repo *SQLiteRepository) MigrateSpendingTables() error {
 	query := `
@@ -166,4 +166,43 @@ func (repo *SQLiteRepository) GetSpendingTableByID(id int64) (*SpendingTable, er
 	}
 
 	return &spendingTable, nil
+}
+
+/**
+ * Methods for Spendings
+ */
+
+func (repo *SQLiteRepository) AddSpending(savingTableId int64) error {
+	query := `
+		insert into spendings(amount, label, saving_table_id)
+		values(0, "New Spending", ?);
+	`
+
+	_, err := repo.Conn.Exec(query, savingTableId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *SQLiteRepository) GetSpendings(savingTableId int64) ([]Spending, error) {
+	query := `select * from spendings where saving_table_id = ?;`
+
+	rows, err := repo.Conn.Query(query, savingTableId)
+	if err != nil {
+		return nil, err
+	}
+
+	var spendings []Spending
+	for rows.Next() {
+		var spending Spending
+		err = rows.Scan(&spending.ID, &spending.Amount, &spending.Label, &spending.Icon, &spending.SpendingTableId)
+		if err != nil {
+			return nil, err
+		}
+		spendings = append(spendings, spending)
+	}
+
+	return spendings, nil
 }

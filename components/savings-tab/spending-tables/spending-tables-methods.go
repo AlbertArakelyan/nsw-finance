@@ -49,7 +49,7 @@ func (spendingTables *SpendingTables) RefreshSpendingsTablesContent(lastSpending
 			canvas.NewText(lastSpendingTable.Label, nil),
 			// TODO Add Delete button
 		),
-		spendingTables.Children.Spendings.GetSpendingsContainer(),
+		spendingTables.Children.Spendings.GetSpendingsContainer(lastSpendingTableId),
 		widget.NewSeparator(),
 	)
 
