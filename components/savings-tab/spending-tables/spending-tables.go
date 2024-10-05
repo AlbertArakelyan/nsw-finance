@@ -119,14 +119,17 @@ func (spendingTables *SpendingTables) getSpendingTables() *fyne.Container {
 	spendingTablesContent.RemoveAll()
 
 	for _, spendingTable := range spendingTablesSlice {
+		spnedingTableLabel := canvas.NewText(spendingTable.Label, nil)
+		spnedingTableLabel.TextStyle = fyne.TextStyle{Bold: true}
 		c := container.NewVBox(
 			container.NewHBox(
-				canvas.NewText(spendingTable.Label, nil),
+				spnedingTableLabel,
 				// TODO Add Delete button
 			),
 			spendingTables.Children.Spendings.GetSpendingsContainer(spendingTable.ID), // TODO add this logic to the place when the list(table) is updated
 			widget.NewSeparator(),
 		)
+		
 		spendingTablesContent.Add(c)
 	}
 
