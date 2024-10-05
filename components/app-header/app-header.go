@@ -14,10 +14,19 @@ func GetAppHeaderContainer() *fyne.Container {
 		Bold: true,
 	}
 
+	logo := canvas.NewImageFromResource(resourceLogoJpg)
+	logo.FillMode = canvas.ImageFillContain
+	logo.SetMinSize(fyne.NewSize(40, 40))
+
 	appHeaderContainer := container.NewStack(
 		canvas.NewRectangle(theme.Color(theme.ColorNameBackground)), // Background color
 		container.NewVBox(
-			container.NewCenter(title),
+			container.NewCenter(
+				container.NewHBox(
+					logo,
+					container.NewCenter(title),
+				),
+			),
 			canvas.NewRectangle(theme.Color(theme.ColorNamePrimary)),
 		),
 	)
