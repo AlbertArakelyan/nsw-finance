@@ -34,6 +34,7 @@ func amountEntryValidator(s string) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 

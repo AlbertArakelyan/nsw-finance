@@ -206,3 +206,25 @@ func (repo *SQLiteRepository) GetSpendings(savingTableId int64) ([]Spending, err
 
 	return spendings, nil
 }
+
+func (repo *SQLiteRepository) UpdateSpendingAmount(id int64, amount float64) error {
+	_, err := repo.Conn.Exec("update spendings set amount = ? where id = ?", amount, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *SQLiteRepository) UpdateSpendingLabel(id int64, label string) error {
+	if label == "" {
+		label = "New Spending"
+	}
+	
+	_, err := repo.Conn.Exec("update spendings set label = ? where id = ?", label, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

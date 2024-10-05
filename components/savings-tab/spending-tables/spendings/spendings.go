@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
@@ -39,11 +38,36 @@ func (spendings *Spendings) getSpenidingsList(savingTableId int64) *fyne.Contain
 
 	spendingsList := container.NewVBox()
 	for _, spending := range spendingsSlice {
-		amountText := strconv.FormatFloat(float64(spending.Amount), 'f', 2, 64)
+		spendingLabelEntry := widget.NewEntry()
+		spendingLabelEntry.SetText(spending.Label)
+		spendingLabelEntry.OnChanged = func(s string) {
+			if s == "" {
+				s = "New Spending"
+				spendingLabelEntry.SetText(s)
+			}
+			err := spendings.UpdateSpendingLabel(spending.ID, s)
+			if err != nil {
+				spendings.ErrorLog.Println(err)
+				// log.Panic(err)
+			}
+		}
 
-		c := container.NewHBox(
-			canvas.NewText(spending.Label, nil), // TODO change into entry and update on DB on change
-			canvas.NewText(amountText, nil), // TODO change into entry and update on DB on change
+		amountText := strconv.FormatFloat(float64(spending.Amount), 'f', 2, 64)
+		spendingAmountEntry := widget.NewEntry()
+		spendingAmountEntry.SetText(amountText)
+		spendingAmountEntry.Validator = spendings.spendingAmountValidator
+		spendingAmountEntry.OnChanged = func(s string) {
+			err := spendings.ValidateAndUpdateSpendingAmount(spending.ID, s)
+			if err != nil {
+				spendings.ErrorLog.Println(err)
+				// log.Panic(err)
+			}
+		}
+
+		c := container.NewGridWithColumns(
+			2,
+			spendingLabelEntry,
+			spendingAmountEntry,
 		)
 		spendingsList.Add(c)
 	}

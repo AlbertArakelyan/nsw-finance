@@ -19,6 +19,8 @@ type Repository interface {
 
 	AddSpending(savingTableId int64) error
 	GetSpendings(savingTableId int64) ([]Spending, error)
+	UpdateSpendingAmount(id int64, amount float64) error
+	UpdateSpendingLabel(id int64, label string) error
 }
 
 type Saving struct {
