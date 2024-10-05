@@ -14,7 +14,7 @@ func GetAppHeaderContainer() *fyne.Container {
 		Bold: true,
 	}
 
-	logo := canvas.NewImageFromResource(resourceLogoJpg)
+	logo := canvas.NewImageFromResource(resourceLogoJpg) // maybe take from images.resourceLogoJpg
 	logo.FillMode = canvas.ImageFillContain
 	logo.SetMinSize(fyne.NewSize(40, 40))
 
