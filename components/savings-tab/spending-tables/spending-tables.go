@@ -126,7 +126,7 @@ func (spendingTables *SpendingTables) getSpendingTables() *fyne.Container {
 				spnedingTableLabel,
 				// TODO Add Delete button
 			),
-			spendingTables.Children.Spendings.GetSpendingsContainer(spendingTable.ID), // TODO add this logic to the place when the list(table) is updated
+			spendingTables.Children.Spendings.GetSpendingsContainer(spendingTable.ID),
 			widget.NewSeparator(),
 		)
 		
