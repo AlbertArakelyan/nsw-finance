@@ -129,7 +129,7 @@ func (spendingTables *SpendingTables) getSpendingTables() *fyne.Container {
 			spendingTables.Children.Spendings.GetSpendingsContainer(spendingTable.ID),
 			widget.NewSeparator(),
 		)
-		
+
 		spendingTablesContent.Add(c)
 	}
 

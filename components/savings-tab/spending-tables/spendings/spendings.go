@@ -3,7 +3,6 @@ package spendings
 import (
 	"log"
 	"nsw-finance/repository"
-	"strconv"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -11,7 +10,9 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-type UIComponents struct{}
+type UIComponents struct {
+	SpendingsList *fyne.Container
+}
 
 type Spendings struct {
 	DB           repository.Repository
@@ -21,9 +22,10 @@ type Spendings struct {
 }
 
 func (spendings *Spendings) GetSpendingsContainer(spendingTableId int64) *fyne.Container {
+	spendingsList := spendings.getSpenidingsList(spendingTableId)
 	spendingsContainer := container.NewVBox(
-		spendings.getSpenidingsList(spendingTableId),
-		spendings.getAddSpendingButton(spendingTableId),
+		spendingsList,
+		spendings.getAddSpendingButton(spendingTableId, spendingsList),
 	)
 
 	return spendingsContainer
@@ -37,47 +39,16 @@ func (spendings *Spendings) getSpenidingsList(savingTableId int64) *fyne.Contain
 	}
 
 	spendingsList := container.NewVBox()
-	for _, spending := range spendingsSlice {
-		spendingLabelEntry := widget.NewEntry()
-		spendingLabelEntry.SetText(spending.Label)
-		spendingLabelEntry.OnChanged = func(s string) {
-			if s == "" {
-				s = "New Spending"
-				spendingLabelEntry.SetText(s)
-			}
-			err := spendings.UpdateSpendingLabel(spending.ID, s)
-			if err != nil {
-				spendings.ErrorLog.Println(err)
-				// log.Panic(err)
-			}
-		}
+	spendings.UIComponents.SpendingsList = spendingsList
 
-		amountText := strconv.FormatFloat(float64(spending.Amount), 'f', 2, 64)
-		spendingAmountEntry := widget.NewEntry()
-		spendingAmountEntry.SetText(amountText)
-		spendingAmountEntry.Validator = spendings.spendingAmountValidator
-		spendingAmountEntry.OnChanged = func(s string) {
-			err := spendings.ValidateAndUpdateSpendingAmount(spending.ID, s)
-			if err != nil {
-				spendings.ErrorLog.Println(err)
-				// log.Panic(err)
-			}
-		}
-
-		c := container.NewGridWithColumns(
-			2,
-			spendingLabelEntry,
-			spendingAmountEntry,
-		)
-		spendingsList.Add(c)
-	}
+	spendings.appendSpendingToList(spendingsList, spendingsSlice)
 
 	return spendingsList
 }
 
-func (spendings *Spendings) getAddSpendingButton(spendingTableId int64) *widget.Button {
+func (spendings *Spendings) getAddSpendingButton(spendingTableId int64, spendingsList *fyne.Container) *widget.Button {
 	addSpendingButton := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
-		err := spendings.AddNewSpending(spendingTableId)
+		err := spendings.AddNewSpending(spendingTableId, spendingsList)
 		if err != nil {
 			spendings.ErrorLog.Println(err)
 			// log.Panic(err)

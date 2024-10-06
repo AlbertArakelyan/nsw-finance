@@ -172,18 +172,28 @@ func (repo *SQLiteRepository) GetSpendingTableByID(id int64) (*SpendingTable, er
  * Methods for Spendings
  */
 
-func (repo *SQLiteRepository) AddSpending(savingTableId int64) error {
+func (repo *SQLiteRepository) AddSpending(savingTableId int64) (*Spending, error) {
 	query := `
 		insert into spendings(amount, label, saving_table_id)
 		values(0, "New Spending", ?);
 	`
 
-	_, err := repo.Conn.Exec(query, savingTableId)
+	res, err := repo.Conn.Exec(query, savingTableId)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	lastInsertId, err := res.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	spending, err := repo.GetSpendingByID(lastInsertId)
+	if err != nil {
+		return nil, err
+	}
+
+	return spending, nil
 }
 
 func (repo *SQLiteRepository) GetSpendings(savingTableId int64) ([]Spending, error) {
@@ -205,6 +215,27 @@ func (repo *SQLiteRepository) GetSpendings(savingTableId int64) ([]Spending, err
 	}
 
 	return spendings, nil
+}
+
+func (repo *SQLiteRepository) GetSpendingByID(id int64) (*Spending, error) {
+	query := `select * from spendings where id = ?;`
+
+	rows, err := repo.Conn.Query(query, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var spendings []Spending
+	for rows.Next() {
+		var spending Spending
+		err = rows.Scan(&spending.ID, &spending.Amount, &spending.Label, &spending.Icon, &spending.SpendingTableId)
+		if err != nil {
+			return nil, err
+		}
+		spendings = append(spendings, spending)
+	}
+
+	return &spendings[0], nil
 }
 
 func (repo *SQLiteRepository) UpdateSpendingAmount(id int64, amount float64) error {

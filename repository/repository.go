@@ -17,8 +17,9 @@ type Repository interface {
 	GetSpendingTables(savingId int64) ([]SpendingTable, error)
 	GetSpendingTableByID(id int64) (*SpendingTable, error)
 
-	AddSpending(savingTableId int64) error
+	AddSpending(savingTableId int64) (*Spending, error)
 	GetSpendings(savingTableId int64) ([]Spending, error)
+	GetSpendingByID(id int64) (*Spending, error)
 	UpdateSpendingAmount(id int64, amount float64) error
 	UpdateSpendingLabel(id int64, label string) error
 }
@@ -40,6 +41,6 @@ type Spending struct {
 	ID              int64   `json:"id"`
 	Amount          float64 `json:"amount"`
 	Label           string  `json:"label"`
-	Icon            *string  `json:"icon"`
+	Icon            *string `json:"icon"`
 	SpendingTableId int64   `json:"spending_table_id"`
 }
