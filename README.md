@@ -12,4 +12,4 @@ A simple Finance Management App for tracking budget for Savings, Needs and Wishe
 
 ---
 
-**💡 Currently the project is under active development, any contributions are Welcome.**
+> **💡 Currently the project is under active development, any contributions are Welcome.**
