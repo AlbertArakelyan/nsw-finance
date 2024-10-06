@@ -1,7 +1,6 @@
 package savingstab
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 
