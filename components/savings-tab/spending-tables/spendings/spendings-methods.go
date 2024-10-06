@@ -96,6 +96,8 @@ func (spendings *Spendings) appendSpendingToList(spendingsList *fyne.Container, 
 				spendings.ErrorLog.Println(err)
 				// log.Panic(err)
 			}
+
+			// TODO update available amount on every change
 		}
 
 		c := container.NewGridWithColumns(
