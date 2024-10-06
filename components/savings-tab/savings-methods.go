@@ -40,6 +40,7 @@ func (savingsTab *SavingsTab) UpdateAvailableSavingAmount(availableAmount *canva
 
 	_, newAvailableAmount := savingsTab.getSavingsText()
 	availableAmount.Text = newAvailableAmount.Text
+	availableAmount.Refresh()
 
 	return nil
 }
