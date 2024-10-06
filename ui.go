@@ -31,7 +31,7 @@ func (app *App) makeUI() {
 
 	tabs := container.NewAppTabs(
 		container.NewTabItemWithIcon("Savings", theme.FileIcon(), savingsContainer),
-		container.NewTabItemWithIcon("Passable", theme.ConfirmIcon(), container.NewCenter(canvas.NewText("Passable Tab. Comming soon ❤️.", nil))),
+		container.NewTabItemWithIcon("Passable", theme.ConfirmIcon(), container.NewCenter(canvas.NewText("Passable Tab, Comming soon ❤️", nil))),
 	)
 	tabs.SetTabLocation(container.TabLocationLeading)
 
