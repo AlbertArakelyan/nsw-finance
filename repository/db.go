@@ -3,6 +3,8 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"fmt"
+	"log"
 )
 
 func NewSQLiteRepository(db *sql.DB) *SQLiteRepository {
@@ -70,6 +72,55 @@ func (s *SQLiteRepository) UpdateSavingAmount(amount int64) error {
 		return err
 	}
 	return nil
+}
+
+func (s *SQLiteRepository) UpdateAvailableSavingAmount() (int64, error) {
+	query := "select id from spending_tables where saving_id = (select id from savings);"
+	rows, err := s.Conn.Query(query)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+
+	var spendingTableIds []int64
+	for rows.Next() {
+		var id int64
+		err = rows.Scan(&id)
+		if err != nil {
+			log.Println(err)
+			return 0, err
+		}
+		spendingTableIds = append(spendingTableIds, id)
+	}
+
+	query = "select * from spendings where saving_table_id in ("
+	for i, id := range spendingTableIds {
+		if i != 0 {
+			query += ","
+		}
+		query += fmt.Sprint(id)
+	}
+	query += ");"
+	rows, err = s.Conn.Query(query)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+
+	var spendingsSum int64
+	for rows.Next() {
+		var spending Spending
+		err = rows.Scan(&spending.ID, &spending.Amount, &spending.Label, &spending.Icon, &spending.SpendingTableId)
+		if err != nil {
+			log.Println(err)
+			return 0, err
+		}
+		spendingsSum += int64(spending.Amount)
+	}
+
+	_, err = s.Conn.Exec("update savings set available_amount = amount - ? where id = 1", spendingsSum)
+
+	return spendingsSum, err
 }
 
 /**
@@ -251,7 +302,7 @@ func (repo *SQLiteRepository) UpdateSpendingLabel(id int64, label string) error 
 	if label == "" {
 		label = "New Spending"
 	}
-	
+
 	_, err := repo.Conn.Exec("update spendings set label = ? where id = ?", label, id)
 	if err != nil {
 		return err

@@ -1,11 +1,14 @@
 package savingstab
 
 import (
+	"fmt"
 	"log"
 	"strconv"
+
+	"fyne.io/fyne/v2/canvas"
 )
 
-func (savingsTab *SavingsTab) GetSavingAmounts() (int64, int64, error) {
+func (savingsTab *SavingsTab) GetSavingAmounts() (float64, int64, error) {
 	saving, err := savingsTab.DB.GetSaving()
 	if err != nil {
 		savingsTab.ErrorLog.Println(err)
@@ -21,10 +24,23 @@ func (savingsTab *SavingsTab) UpdateSavingAmount(amountText string) error {
 		savingsTab.ErrorLog.Println(err)
 		log.Panic(err)
 	}
+
 	err = savingsTab.DB.UpdateSavingAmount(int64(amount))
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func (savingsTab *SavingsTab) UpdateAvailableSavingAmount(availableAmount *canvas.Text) error {
+	_, err := savingsTab.DB.UpdateAvailableSavingAmount()
+	if err != nil {
+		return err
+	}
+
+	_, newAvailableAmount := savingsTab.getSavingsText()
+	availableAmount.Text = newAvailableAmount.Text
 
 	return nil
 }

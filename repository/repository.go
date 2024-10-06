@@ -10,6 +10,7 @@ type Repository interface {
 	MigrateSavings() error
 	GetSaving() (*Saving, error)
 	UpdateSavingAmount(amount int64) error
+	UpdateAvailableSavingAmount() (int64, error)
 
 	MigrateSpendingTables() error
 	MigrateSpendings() error
@@ -26,7 +27,7 @@ type Repository interface {
 
 type Saving struct {
 	ID              int64 `json:"id"`
-	Amount          int64 `json:"amount"`
+	Amount          float64 `json:"amount"`
 	AvailableAmount int64 `json:"available_amount"`
 	Year            int64 `json:"year"`
 }

@@ -53,8 +53,8 @@ func (savingsTab *SavingsTab) getSavingsContainer() *fyne.Container {
 	amountEntry.Text = amount
 	amountEntry.OnChanged = func(s string) {
 		savingsTab.ValidateAndUpdateSavingAmount(s)
-
-		// TODO update available amount on every change
+		savingsTab.UpdateAvailableSavingAmount(availableAmount)
+		availableAmount.Refresh()
 	}
 	amountEntry.Validator = amountEntryValidator
 
@@ -63,8 +63,6 @@ func (savingsTab *SavingsTab) getSavingsContainer() *fyne.Container {
 	saveBtn := widget.NewButtonWithIcon("Save", theme.DocumentSaveIcon(), func() {
 		savingsTab.ValidateAndUpdateSavingAmount(amountEntry.Text)
 		amountEntry.Refresh()
-
-		// TODO also add logic for updating spendings (in tables)
 	})
 	saveBtn.Alignment = widget.ButtonAlignTrailing
 	saveBtn.Importance = widget.HighImportance
@@ -80,5 +78,3 @@ func (savingsTab *SavingsTab) getSavingsContainer() *fyne.Container {
 
 	return savingsContainer
 }
-
-// TODO add functions or reusable function for displaying spending tables
