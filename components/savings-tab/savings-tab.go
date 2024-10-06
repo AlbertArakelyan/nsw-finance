@@ -53,6 +53,8 @@ func (savingsTab *SavingsTab) getSavingsContainer() *fyne.Container {
 	amountEntry.Text = amount
 	amountEntry.OnChanged = func(s string) {
 		savingsTab.ValidateAndUpdateSavingAmount(s)
+
+		// TODO update available amount on every change
 	}
 	amountEntry.Validator = amountEntryValidator
 
