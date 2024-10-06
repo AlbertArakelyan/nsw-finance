@@ -60,6 +60,7 @@ func (savingsTab *SavingsTab) getSavingsContainer() *fyne.Container {
 
 	amountEntryContainer := container.NewBorder(nil, nil, amountText, nil, amountEntry)
 
+	// Save button
 	saveBtn := widget.NewButtonWithIcon("Save", theme.DocumentSaveIcon(), func() {
 		savingsTab.ValidateAndUpdateSavingAmount(amountEntry.Text)
 		amountEntry.Refresh()
@@ -67,12 +68,21 @@ func (savingsTab *SavingsTab) getSavingsContainer() *fyne.Container {
 	saveBtn.Alignment = widget.ButtonAlignTrailing
 	saveBtn.Importance = widget.HighImportance
 
+	// Calculate button
+	calcBtn := widget.NewButtonWithIcon("Calculate", theme.ViewRefreshIcon(), func() {
+		savingsTab.UpdateAvailableSavingAmount(availableAmount)
+		availableAmount.Refresh()
+	})
+
 	savingsContainer := container.NewVBox(
 		amountEntryContainer,
 		container.NewHBox(
 			availableAmount,
 			layout.NewSpacer(),
-			saveBtn,
+			container.NewHBox(
+				calcBtn,
+				saveBtn,
+			),
 		),
 	)
 
