@@ -69,12 +69,12 @@ func main() {
 func (app *App) connectSQL() (*sql.DB, error) {
 	path := "./sql.db"
 
-	// if os.Getenv("DB_PATH") != "" {
-	// 	path = os.Getenv("DB_PATH")
-	// } else {
-	// 	path = app.App.Storage().RootURI().Path() + "/sql.db"
-	// 	app.InfoLog.Println("db in:", path)
-	// }
+	if os.Getenv("DB_PATH") != "" {
+		path = os.Getenv("DB_PATH")
+	} else {
+		path = app.App.Storage().RootURI().Path() + "/sql.db"
+		app.Utils.InfoLog.Println("db in:", path)
+	}
 
 	db, err := sql.Open("sqlite", path)
 	if err != nil {
