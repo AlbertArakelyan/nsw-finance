@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
-	"nsw-finance/repository"
+	savingsrepository "nsw-finance/repository/savings-repository"
 	"os"
 
 	"fyne.io/fyne/v2"
@@ -28,7 +28,7 @@ type App struct {
 	App          fyne.App
 	MainWindow   fyne.Window
 	UIComponents UIComponents
-	DB           repository.Repository
+	DB           savingsrepository.Repository
 	Utils        Utils
 }
 
@@ -85,7 +85,7 @@ func (app *App) connectSQL() (*sql.DB, error) {
 }
 
 func (app *App) setupDB(sqlDB *sql.DB) {
-	app.DB = repository.NewSQLiteRepository(sqlDB)
+	app.DB = savingsrepository.NewSQLiteRepository(sqlDB)
 
 	err := app.DB.MigrateSavings()
 	if err != nil {

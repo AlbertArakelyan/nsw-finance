@@ -1,7 +1,7 @@
 package spendings
 
 import (
-	"nsw-finance/repository"
+	savingsrepository "nsw-finance/repository/savings-repository"
 	"strconv"
 
 	"fyne.io/fyne/v2"
@@ -15,7 +15,7 @@ func (spendings *Spendings) AddNewSpending(savingTableId int64, spendingsList *f
 		return err
 	}
 
-	var spendingsSlice []repository.Spending
+	var spendingsSlice []savingsrepository.Spending
 
 	spendingsSlice = append(spendingsSlice, *s)
 
@@ -24,7 +24,7 @@ func (spendings *Spendings) AddNewSpending(savingTableId int64, spendingsList *f
 	return nil
 }
 
-func (spendings *Spendings) GetSpendings(savingTableId int64) ([]repository.Spending, error) {
+func (spendings *Spendings) GetSpendings(savingTableId int64) ([]savingsrepository.Spending, error) {
 	spendingsSlice, err := spendings.DB.GetSpendings(savingTableId)
 	if err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (spendings *Spendings) UpdateSpendingLabel(id int64, label string) error {
 	return nil
 }
 
-func (spendings *Spendings) appendSpendingToList(spendingsList *fyne.Container, spendingsSlice []repository.Spending) {
+func (spendings *Spendings) appendSpendingToList(spendingsList *fyne.Container, spendingsSlice []savingsrepository.Spending) {
 	for _, spending := range spendingsSlice {
 		spendingLabelEntry := widget.NewEntry()
 		spendingLabelEntry.SetText(spending.Label)

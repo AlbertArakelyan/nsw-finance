@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	spendingtables "nsw-finance/components/savings-tab/spending-tables"
-	"nsw-finance/repository"
+	savingsrepository "nsw-finance/repository/savings-repository"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -19,7 +19,7 @@ type SavingsChildren struct {
 }
 
 type SavingsTab struct {
-	DB       repository.Repository
+	DB       savingsrepository.Repository
 	InfoLog  *log.Logger
 	ErrorLog *log.Logger
 	Children SavingsChildren

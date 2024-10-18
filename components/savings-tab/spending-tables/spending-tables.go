@@ -3,7 +3,7 @@ package spendingtables
 import (
 	"log"
 	"nsw-finance/components/savings-tab/spending-tables/spendings"
-	"nsw-finance/repository"
+	savingsrepository "nsw-finance/repository/savings-repository"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -22,12 +22,12 @@ type UIComponents struct {
 }
 
 type SpendingTables struct {
-	DB                         repository.Repository
+	DB                         savingsrepository.Repository
 	InfoLog                    *log.Logger
 	ErrorLog                   *log.Logger
 	UIComponents               UIComponents
 	Children                   SpendingTablesChildren
-	SpendingTablesSlice        []repository.SQLiteRepository
+	SpendingTablesSlice        []savingsrepository.SQLiteRepository
 	IsSpendingTablesSliceEmpty bool
 }
 

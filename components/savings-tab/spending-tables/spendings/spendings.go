@@ -2,7 +2,7 @@ package spendings
 
 import (
 	"log"
-	"nsw-finance/repository"
+	savingsrepository "nsw-finance/repository/savings-repository"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -15,7 +15,7 @@ type UIComponents struct {
 }
 
 type Spendings struct {
-	DB           repository.Repository
+	DB           savingsrepository.Repository
 	InfoLog      *log.Logger
 	ErrorLog     *log.Logger
 	UIComponents UIComponents

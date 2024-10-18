@@ -2,7 +2,7 @@ package spendingtables
 
 import (
 	"errors"
-	"nsw-finance/repository"
+	savingsrepository "nsw-finance/repository/savings-repository"
 
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
@@ -24,7 +24,7 @@ func (spendingTables *SpendingTables) ValidateAndAddSpendingTable(label string, 
 	return nil
 }
 
-func (spendingTables *SpendingTables) GetSpendingTables(savingId int64) ([]repository.SpendingTable, error) {
+func (spendingTables *SpendingTables) GetSpendingTables(savingId int64) ([]savingsrepository.SpendingTable, error) {
 	spendingTablesSlice, err := spendingTables.DB.GetSpendingTables(savingId)
 	if err != nil {
 		return nil, err
