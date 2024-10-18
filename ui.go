@@ -22,7 +22,7 @@ func (app *App) makeUI() {
 
 	// Savings Tab
 	savingsTab := &savingstab.SavingsTab{
-		DB:       app.DB,
+		DB:       app.SavingsDB,
 		InfoLog:  app.Utils.InfoLog,
 		ErrorLog: app.Utils.ErrorLog,
 	}

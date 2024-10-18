@@ -29,7 +29,7 @@ type App struct {
 	App          fyne.App
 	MainWindow   fyne.Window
 	UIComponents UIComponents
-	DB           savingsrepository.Repository
+	SavingsDB           savingsrepository.Repository
 	Utils        Utils
 }
 
@@ -86,21 +86,21 @@ func (app *App) connectSQL() (*sql.DB, error) {
 }
 
 func (app *App) setupDB(sqlDB *sql.DB) {
-	app.DB = savingsrepository.NewSQLiteRepository(sqlDB)
+	app.SavingsDB = savingsrepository.NewSQLiteRepository(sqlDB)
 
-	err := app.DB.MigrateSavings()
+	err := app.SavingsDB.MigrateSavings()
 	if err != nil {
 		app.Utils.ErrorLog.Println(err)
 		log.Panic(err)
 	}
 
-	err = app.DB.MigrateSpendingTables()
+	err = app.SavingsDB.MigrateSpendingTables()
 	if err != nil {
 		app.Utils.ErrorLog.Println(err)
 		log.Panic(err)
 	}
 
-	err = app.DB.MigrateSpendings()
+	err = app.SavingsDB.MigrateSpendings()
 	if err != nil {
 		app.Utils.ErrorLog.Println(err)
 		log.Panic(err)
