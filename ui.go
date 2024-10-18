@@ -2,9 +2,9 @@ package main
 
 import (
 	appheader "nsw-finance/components/app-header"
+	passabletab "nsw-finance/components/passable-tab"
 	savingstab "nsw-finance/components/savings-tab"
 
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 )
@@ -30,11 +30,16 @@ func (app *App) makeUI() {
 	app.UIComponents.SavingsContainer = savingsContainer
 
 	// Passable Tab
-	// component logic goes here
+	passableTab := &passabletab.PassableTab{
+		InfpLog:  app.Utils.InfoLog,
+		ErrorLog: app.Utils.ErrorLog,
+	}
+	passableContainer := passableTab.GetPassableTab()
+	app.UIComponents.PassableContainer = passableContainer
 
 	tabs := container.NewAppTabs(
 		container.NewTabItemWithIcon("Savings", theme.FileIcon(), savingsContainer),
-		container.NewTabItemWithIcon("Passable", theme.ConfirmIcon(), container.NewCenter(canvas.NewText("Passable Tab, Comming soon ❤️", nil))),
+		container.NewTabItemWithIcon("Passable", theme.ConfirmIcon(), passableContainer),
 	)
 	tabs.SetTabLocation(container.TabLocationLeading)
 

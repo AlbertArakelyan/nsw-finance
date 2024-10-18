@@ -15,7 +15,8 @@ import (
 )
 
 type UIComponents struct {
-	SavingsContainer *fyne.Container
+	SavingsContainer  *fyne.Container
+	PassableContainer *fyne.Container
 }
 
 type Utils struct {
