@@ -29,6 +29,9 @@ func (app *App) makeUI() {
 	savingsContainer := savingsTab.GetSavingsTab()
 	app.UIComponents.SavingsContainer = savingsContainer
 
+	// Passable Tab
+	// component logic goes here
+
 	tabs := container.NewAppTabs(
 		container.NewTabItemWithIcon("Savings", theme.FileIcon(), savingsContainer),
 		container.NewTabItemWithIcon("Passable", theme.ConfirmIcon(), container.NewCenter(canvas.NewText("Passable Tab, Comming soon ❤️", nil))),
