@@ -1,6 +1,6 @@
 BINARY_NAME=NSWFinance.app
 APP_NAME=NSWFinance
-VERSION=0.1.4
+VERSION=0.1.6
 BUILD_NO=1
 
 ## build: build binary and package app
