@@ -2,7 +2,7 @@ BINARY_NAME=NSWFinance.app
 BINARY_NAME_WINDOWS=NSWFinance.exe
 APP_ID_WINDOWS=com.nswfinance.aa
 APP_NAME=NSWFinance
-VERSION=0.1.6
+VERSION=0.1.7
 BUILD_NO=1
 
 ## build: build binary and package app
