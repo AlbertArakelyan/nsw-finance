@@ -4,7 +4,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlbertArakelyan/nsw-finance)
 ![Language](https://img.shields.io/badge/language-go-blue)
-![Platforms](https://img.shields.io/badge/platforms-Mac%20OS-green)
+![Platforms](https://img.shields.io/badge/platforms-Mac%20OS,%20Windows-green)
 ![License](https://img.shields.io/github/license/AlbertArakelyan/nsw-finance)
 
 ![Screenshot](./screenshot.png)
