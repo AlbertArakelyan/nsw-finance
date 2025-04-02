@@ -3,6 +3,7 @@ package spendings
 import (
 	savingsrepository "nsw-finance/repository/savings-repository"
 	"strconv"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -79,10 +80,19 @@ func (spendings *Spendings) appendSpendingToList(spendingsList *fyne.Container, 
 				s = "New Spending"
 				spendingLabelEntry.SetText(s)
 			}
-			err := spendings.UpdateSpendingLabel(spending.ID, s)
-			if err != nil {
-				spendings.ErrorLog.Println(err)
-				// log.Panic(err)
+			spendingLabelEntry.OnChanged = func(s string) {
+				if s == "" {
+					s = "New Spending"
+					spendingLabelEntry.SetText(s)
+				}
+				go func() {
+					time.Sleep(500 * time.Millisecond)
+					err := spendings.UpdateSpendingLabel(spending.ID, s)
+					if err != nil {
+						spendings.ErrorLog.Println(err)
+						// log.Panic(err)
+					}
+				}()
 			}
 		}
 
