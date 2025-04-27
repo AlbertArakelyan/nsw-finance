@@ -6,6 +6,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -106,6 +107,32 @@ func (spendings *Spendings) appendSpendingToList(spendingsList *fyne.Container, 
 			spendingAmountEntry,
 		)
 
-		spendingsList.Add(c)
+		var dialog *widget.PopUp
+		deleteButton := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {
+			dialog = widget.NewModalPopUp(
+				container.NewVBox(
+					widget.NewLabel("Not fully implemented yet."),
+					widget.NewButton("OK", func() {
+						// Perform delete action here
+						dialog.Hide()
+					}),
+					// widget.NewButton("Cancel", func() {
+					// 	dialog.Hide()
+					// }),
+				),
+				fyne.CurrentApp().Driver().CanvasForObject(spendingsList),
+			)
+			dialog.Show()
+			dialog.Move(fyne.NewPos(100, 100))
+			dialog.Show()
+		})
+		deleteButton.Importance = widget.DangerImportance
+
+		cont := container.NewBorder(
+			nil, nil, nil, deleteButton,
+			c,
+		)
+
+		spendingsList.Add(cont)
 	}
 }
